@@ -1,4 +1,4 @@
-package p146
+package lru_cache
 
 type Node struct {
 	Key, Val   int
