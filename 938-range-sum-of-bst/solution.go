@@ -98,35 +98,33 @@ func (l *List) Len() int {
 	return l.Length
 }
 
-type Slice struct {
-	arr []*TreeNode
-}
+type Queue []*TreeNode
 
-func (s *Slice) Enqueue(node *TreeNode) error {
-	s.arr = append(s.arr, node)
+func (q *Queue) Enqueue(node *TreeNode) error {
+	*q = append(*q, node)
 	return nil
 }
 
-func (s *Slice) Dequeue() (*TreeNode, error) {
-	n := s.arr[0]
-	s.arr = s.arr[1:]
+func (q *Queue) Dequeue() (*TreeNode, error) {
+	n := (*q)[0]
+	*q = (*q)[1:]
 	return n, nil
 }
 
-func (s *Slice) Len() int {
-	return len(s.arr)
+func (q *Queue) Len() int {
+	return len(*q)
 }
 
 func rangeSumBSTBFS(root *TreeNode, low int, high int) int {
-	var l Slice
+	var q Queue
 	var sum int
 
-	if err := l.Enqueue(root); err != nil {
+	if err := q.Enqueue(root); err != nil {
 		panic(err)
 	}
 
-	for l.Len() != 0 {
-		node, err := l.Dequeue()
+	for q.Len() != 0 {
+		node, err := q.Dequeue()
 		if err != nil {
 			panic(err)
 		}
@@ -136,13 +134,13 @@ func rangeSumBSTBFS(root *TreeNode, low int, high int) int {
 		}
 
 		if node.Left != nil {
-			if err := l.Enqueue(node.Left); err != nil {
+			if err := q.Enqueue(node.Left); err != nil {
 				panic(err)
 			}
 		}
 
 		if node.Right != nil {
-			if err := l.Enqueue(node.Right); err != nil {
+			if err := q.Enqueue(node.Right); err != nil {
 				panic(err)
 			}
 		}
